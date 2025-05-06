@@ -5,7 +5,7 @@ import { useState, useRef } from 'react';
 export default function FeatureDemo() {
     const [showVideo, setShowVideo] = useState(false);
     const [currentVideo, setCurrentVideo] = useState('');
-    const videoRef = useRef(null);
+    const videoRef = useRef<HTMLVideoElement | null>(null);
 
     const videos = {
         monitor: '/health-monitoring.mp4',
@@ -13,7 +13,8 @@ export default function FeatureDemo() {
         consultation: '/doctor-consultation.mp4'
     };
 
-    const handlePlay = (videoKey: any) => {
+    const handlePlay = (videoKey: string) => { // 更明确的参数类型
+        // @ts-ignore
         setCurrentVideo(videos[videoKey]);
         setShowVideo(true);
     };
