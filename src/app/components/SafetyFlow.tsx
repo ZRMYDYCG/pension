@@ -1,82 +1,164 @@
-// components/SafetyFlow.jsx
-export default function SafetyFlow() {
+import React from 'react';
+
+type FlowStepProps = {
+    stepNumber: number;
+    title: string;
+    description: string;
+    image: string;
+    icon: React.ReactNode;
+};
+
+const FlowStep: React.FC<FlowStepProps> = ({
+                                               stepNumber,
+                                               title,
+                                               description,
+                                               image,
+                                               icon
+                                           }) => {
     return (
-        <section className="container mx-auto px-6 py-20 bg-gray-50">
-            <h2 className="text-3xl font-bold text-center mb-12">服务流程</h2>
-
-            <div className="relative">
-                <div className="absolute inset-0 bg-gradient-to-r from-blue-50 to-purple-50 opacity-30 rounded-lg"></div>
-
-                <div className="bg-white rounded-lg shadow-lg p-8 relative">
-                    <div className="flex justify-center mb-12">
-                        <img src="/logo.svg" alt="暖芯颐养" className="w-24 h-auto" />
+        <div className="mb-12">
+            <div className="flex justify-center mb-6">
+                <div className="relative">
+                    <div className="absolute -inset-2 bg-gradient-to-r from-blue-100 to-purple-100 rounded-full blur opacity-75"></div>
+                    <div className="relative bg-gradient-to-br from-warm-primary to-warm-accent text-white w-12 h-12 flex items-center justify-center rounded-full text-xl font-bold shadow-lg">
+                        {stepNumber}
                     </div>
+                </div>
+            </div>
 
-                    <div className="flow-root">
-                        <div className="flex justify-center mb-8">
-                            <div className="bg-warm-primary text-white px-6 py-3 rounded-full text-center">
-                                1
+            <div className="bg-white p-8 rounded-xl shadow-md border border-gray-100 hover:shadow-lg transition-shadow">
+                <div className="flex items-center gap-4 mb-4">
+                    <div className="flex-shrink-0 p-3 rounded-lg bg-gradient-to-br from-blue-50 to-purple-50">
+                        {icon}
+                    </div>
+                    <h3 className="text-xl font-bold text-gray-800">{title}</h3>
+                </div>
+
+                <p className="text-gray-600 mb-6">{description}</p>
+                <img
+                    src={image}
+                    alt={title}
+                    className="w-full rounded-lg shadow-sm border border-gray-200"
+                />
+            </div>
+        </div>
+    );
+};
+
+const AssessmentIcon = () => (
+    <svg className="w-8 h-8" viewBox="0 0 100 100">
+        <path fill="#4F46E5" d="M50 10L20 50h15v30h30V50h15z"/>
+        <path fill="#818CF8" d="M50 30L35 50h30z"/>
+        <circle cx="50" cy="70" r="10" fill="#A5B4FC"/>
+    </svg>
+);
+
+const InstallationIcon = () => (
+    <svg className="w-8 h-8" viewBox="0 0 100 100">
+        <rect x="20" y="30" width="60" height="40" rx="5" fill="#10B981"/>
+        <rect x="30" y="40" width="40" height="20" fill="#34D399"/>
+        <circle cx="50" cy="25" r="10" fill="#F59E0B"/>
+        <circle cx="50" cy="25" r="5" fill="#FCD34D"/>
+    </svg>
+);
+
+const MonitoringIcon = () => (
+    <svg className="w-8 h-8" viewBox="0 0 100 100">
+        <circle cx="50" cy="50" r="30" fill="#3B82F6"/>
+        <circle cx="50" cy="50" r="20" fill="#93C5FD"/>
+        <path fill="#1D4ED8" d="M50 20v10M50 70v10M20 50h10M70 50h10"/>
+    </svg>
+);
+
+const ResponseIcon = () => (
+    <svg className="w-8 h-8" viewBox="0 0 100 100">
+        <path fill="#EF4444" d="M50 10l40 20v30c0 20-15 35-40 40-25-5-40-20-40-40V30z"/>
+        <path fill="#FECACA" d="M50 45l15 15H35z"/>
+        <circle cx="50" cy="60" r="5" fill="#FEE2E2"/>
+    </svg>
+);
+
+const SafetyFlow: React.FC = () => {
+    const steps = [
+        {
+            stepNumber: 1,
+            title: '需求评估与方案定制',
+            description: '我们的客服人员将与您沟通需求，安排专业评估师上门评估老人的居住环境和安全需求，根据评估结果定制个性化的安全方案。',
+            image: '/step1.png',
+            icon: <AssessmentIcon />
+        },
+        {
+            stepNumber: 2,
+            title: '设备安装与调试',
+            description: '专业技术人员将上门安装安全设备，包括智能门锁、紧急呼叫按钮、烟雾报警器、燃气报警器等，并进行系统调试，确保设备正常运行。',
+            image: '/step2.png',
+            icon: <InstallationIcon />
+        },
+        {
+            stepNumber: 3,
+            title: '系统监测与预警',
+            description: '安装完成后，系统将24小时不间断监测居家安全状况。一旦发现异常情况，系统将立即发出预警，并通知我们的响应中心和预设的紧急联系人。',
+            image: '/step3.png',
+            icon: <MonitoringIcon />
+        },
+        {
+            stepNumber: 4,
+            title: '快速响应与处理',
+            description: '收到预警后，我们的响应中心将立即启动应急预案，派遣最近的服务人员前往处理，并根据情况联系医疗机构或其他紧急服务，确保老人的安全。',
+            image: '/step4.png',
+            icon: <ResponseIcon />
+        }
+    ];
+
+    return (
+        <section className="py-20 bg-gradient-to-b from-blue-50 to-purple-50">
+            <div className="container mx-auto px-6 max-w-5xl">
+                <h2 className="text-4xl font-bold text-center mb-16">
+          <span className="bg-gradient-to-r from-warm-primary to-warm-accent bg-clip-text text-transparent">
+            安全服务流程
+          </span>
+                </h2>
+
+                <div className="relative">
+                    <div className="absolute inset-0 bg-gradient-to-r from-blue-100 to-purple-100 rounded-3xl opacity-30"></div>
+
+                    <div className="relative bg-white rounded-3xl shadow-xl overflow-hidden">
+                        <div className="p-8 md:p-12">
+                            <div className="flex justify-center mb-12">
+                                <div className="bg-gradient-to-r from-warm-primary to-warm-accent p-4 rounded-full shadow-lg">
+                                    <img
+                                        src="/logo.svg"
+                                        alt="暖芯颐养"
+                                        className="w-20 h-20 object-contain"
+                                    />
+                                </div>
                             </div>
-                        </div>
 
-                        <div className="bg-gray-50 p-6 rounded-lg mb-8">
-                            <h3 className="text-xl font-bold text-warm-primary mb-2">需求评估与方案定制</h3>
-                            <p className="text-gray-700">
-                                我们的客服人员将与您沟通需求，安排专业评估师上门评估老人的居住环境和安全需求，根据评估结果定制个性化的安全方案。
-                            </p>
-                            <img src="/step1.png" alt="需求评估" className="w-full mt-4 rounded-lg shadow-sm" />
-                        </div>
-
-                        <div className="flex justify-center mb-8">
-                            <div className="bg-warm-primary text-white px-6 py-3 rounded-full text-center">
-                                2
+                            <div className="space-y-8">
+                                {steps.map((step) => (
+                                    <FlowStep
+                                        key={step.stepNumber}
+                                        stepNumber={step.stepNumber}
+                                        title={step.title}
+                                        description={step.description}
+                                        image={step.image}
+                                        icon={step.icon}
+                                    />
+                                ))}
                             </div>
-                        </div>
 
-                        <div className="bg-gray-50 p-6 rounded-lg mb-8">
-                            <h3 className="text-xl font-bold text-warm-primary mb-2">设备安装与调试</h3>
-                            <p className="text-gray-700">
-                                专业技术人员将上门安装安全设备，包括智能门锁、紧急呼叫按钮、烟雾报警器、燃气报警器等，并进行系统调试，确保设备正常运行。
-                            </p>
-                            <img src="/step2.png" alt="设备安装" className="w-full mt-4 rounded-lg shadow-sm" />
-                        </div>
-
-                        <div className="flex justify-center mb-8">
-                            <div className="bg-warm-primary text-white px-6 py-3 rounded-full text-center">
-                                3
+                            <div className="text-center mt-12">
+                                <button className="relative overflow-hidden group bg-gradient-to-r from-warm-primary to-warm-accent text-white px-8 py-4 rounded-xl hover:shadow-lg transition-all">
+                                    <span className="relative z-10">申请居家安全评估</span>
+                                    <span className="absolute inset-0 bg-gradient-to-r from-warm-accent to-warm-primary opacity-0 group-hover:opacity-100 transition-opacity"></span>
+                                </button>
                             </div>
-                        </div>
-
-                        <div className="bg-gray-50 p-6 rounded-lg mb-8">
-                            <h3 className="text-xl font-bold text-warm-primary mb-2">系统监测与预警</h3>
-                            <p className="text-gray-700">
-                                安装完成后，系统将24小时不间断监测居家安全状况。一旦发现异常情况，系统将立即发出预警，并通知我们的响应中心和预设的紧急联系人。
-                            </p>
-                            <img src="/step3.png" alt="系统监测" className="w-full mt-4 rounded-lg shadow-sm" />
-                        </div>
-
-                        <div className="flex justify-center mb-8">
-                            <div className="bg-warm-primary text-white px-6 py-3 rounded-full text-center">
-                                4
-                            </div>
-                        </div>
-
-                        <div className="bg-gray-50 p-6 rounded-lg mb-8">
-                            <h3 className="text-xl font-bold text-warm-primary mb-2">快速响应与处理</h3>
-                            <p className="text-gray-700">
-                                收到预警后，我们的响应中心将立即启动应急预案，派遣最近的服务人员前往处理，并根据情况联系医疗机构或其他紧急服务，确保老人的安全。
-                            </p>
-                            <img src="/step4.png" alt="快速响应" className="w-full mt-4 rounded-lg shadow-sm" />
-                        </div>
-
-                        <div className="text-center mt-8">
-                            <button className="bg-warm-primary text-white px-8 py-3 rounded-lg hover:bg-warm-accent transition-colors">
-                                申请居家安全评估
-                            </button>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
     );
-}
+};
+
+export default SafetyFlow;
