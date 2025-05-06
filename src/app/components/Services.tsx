@@ -3,7 +3,7 @@ import React from 'react';
 type ServiceCardProps = {
     title: string;
     description: string;
-    icon: React.ReactElement;
+    icon: React.ReactElement<IconProps>;
 };
 
 const ServiceCard: React.FC<ServiceCardProps> = ({ title, description, icon }) => {
@@ -11,7 +11,7 @@ const ServiceCard: React.FC<ServiceCardProps> = ({ title, description, icon }) =
         <div className="group bg-white p-8 rounded-2xl shadow-lg transition-all duration-300 hover:shadow-xl hover:-translate-y-2">
             <div className="text-center mb-6">
                 <div className="inline-block p-4 rounded-2xl bg-gradient-to-br from-warm-primary/20 to-warm-accent/20">
-                    {React.cloneElement(icon, { className: 'w-20 h-20' })}
+                    {React.cloneElement(icon, { className: `${icon.props.className || ''} w-20 h-20` })}
                 </div>
             </div>
             <h3 className="text-2xl font-bold text-center mb-4 text-gray-800">{title}</h3>
@@ -62,22 +62,22 @@ const servicesData = [
     {
         title: '智能健康管理系统',
         description: '实时监测健康数据，提供个性化健康管理方案，让老年人随时掌握自身健康状况',
-        icon: <HealthIcon className="w-20 h-20" />,
+        icon: <HealthIcon />,
     },
     {
         title: '居家安全管理系统',
         description: '利用智能安防设备，实时监控居家安全状况，保障老年人居住环境的安全',
-        icon: <HomeSafetyIcon className="w-20 h-20" />,
+        icon: <HomeSafetyIcon />,
     },
     {
         title: '紧急呼叫与响应服务',
         description: '一键呼叫，快速响应，为老年人提供24小时紧急救援服务，确保安全无忧',
-        icon: <EmergencyIcon className="w-20 h-20" />,
+        icon: <EmergencyIcon />,
     },
     {
         title: '远程医疗健康服务',
         description: '连接专业医疗资源，提供远程问诊、健康咨询和专业医疗建议，让老年人享受便捷医疗服务',
-        icon: <TelemedicineIcon className="w-20 h-20" />,
+        icon: <TelemedicineIcon />,
     },
 ];
 
