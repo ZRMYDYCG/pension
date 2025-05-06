@@ -1,4 +1,6 @@
-import React from 'react';
+"use client"
+
+import React, { useState } from 'react';
 
 type FlowStepProps = {
     stepNumber: number;
@@ -6,43 +8,8 @@ type FlowStepProps = {
     description: string;
     image: string;
     icon: React.ReactNode;
-};
-
-const FlowStep: React.FC<FlowStepProps> = ({
-                                               stepNumber,
-                                               title,
-                                               description,
-                                               image,
-                                               icon
-                                           }) => {
-    return (
-        <div className="mb-12">
-            <div className="flex justify-center mb-6">
-                <div className="relative">
-                    <div className="absolute -inset-2 bg-gradient-to-r from-blue-100 to-purple-100 rounded-full blur opacity-75"></div>
-                    <div className="relative bg-gradient-to-br from-warm-primary to-warm-accent text-white w-12 h-12 flex items-center justify-center rounded-full text-xl font-bold shadow-lg">
-                        {stepNumber}
-                    </div>
-                </div>
-            </div>
-
-            <div className="bg-white p-8 rounded-xl shadow-md border border-gray-100 hover:shadow-lg transition-shadow">
-                <div className="flex items-center gap-4 mb-4">
-                    <div className="flex-shrink-0 p-3 rounded-lg bg-gradient-to-br from-blue-50 to-purple-50">
-                        {icon}
-                    </div>
-                    <h3 className="text-xl font-bold text-gray-800">{title}</h3>
-                </div>
-
-                <p className="text-gray-600 mb-6">{description}</p>
-                <img
-                    src={image}
-                    alt={title}
-                    className="w-full rounded-lg shadow-sm border border-gray-200"
-                />
-            </div>
-        </div>
-    );
+    isActive: boolean;
+    onHover: () => void;
 };
 
 const AssessmentIcon = () => (
@@ -78,7 +45,54 @@ const ResponseIcon = () => (
     </svg>
 );
 
+const FlowStep: React.FC<FlowStepProps> = ({
+                                               stepNumber,
+                                               title,
+                                               description,
+                                               image,
+                                               icon,
+                                               isActive,
+                                               onHover
+                                           }) => {
+    return (
+        <div
+            className={`mb-12 transition-all duration-300 ${isActive ? 'scale-105' : 'scale-100'}`}
+            onMouseEnter={onHover}
+        >
+            <div className="flex justify-center mb-6">
+                <div className="relative">
+                    <div className={`absolute -inset-2 rounded-full blur opacity-75 transition-all duration-300 ${isActive ? 'bg-gradient-to-r from-blue-300 to-purple-300' : 'bg-gradient-to-r from-blue-100 to-purple-100'}`}></div>
+                    <div className={`relative w-14 h-14 flex items-center justify-center rounded-full text-xl font-bold shadow-lg transition-all duration-300 ${isActive ? 'bg-gradient-to-br from-blue-600 to-purple-600 text-white' : 'bg-gradient-to-br from-warm-primary to-warm-accent text-white'}`}>
+                        {stepNumber}
+                    </div>
+                </div>
+            </div>
+
+            <div className={`bg-white p-8 rounded-xl shadow-md border transition-all duration-300 ${isActive ? 'border-blue-200 shadow-lg' : 'border-gray-100'}`}>
+                <div className="flex items-center gap-4 mb-4">
+                    <div className={`flex-shrink-0 p-3 rounded-lg transition-all duration-300 ${isActive ? 'bg-gradient-to-br from-blue-100 to-purple-100' : 'bg-gradient-to-br from-blue-50 to-purple-50'}`}>
+                        {icon}
+                    </div>
+                    <h3 className={`text-xl font-bold transition-colors duration-300 ${isActive ? 'text-blue-600' : 'text-gray-800'}`}>{title}</h3>
+                </div>
+
+                <p className="text-gray-600 mb-6">{description}</p>
+                <img
+                    src={image}
+                    alt={title}
+                    className={`w-full rounded-lg shadow-sm border transition-all duration-300 ${isActive ? 'border-blue-200 scale-105' : 'border-gray-200'}`}
+                    loading="lazy"
+                />
+            </div>
+        </div>
+    );
+};
+
+// 图标组件保持不变...
+
 const SafetyFlow: React.FC = () => {
+    const [activeStep, setActiveStep] = useState<number | null>(null);
+
     const steps = [
         {
             stepNumber: 1,
@@ -111,29 +125,49 @@ const SafetyFlow: React.FC = () => {
     ];
 
     return (
-        <section className="py-20 bg-gradient-to-b from-blue-50 to-purple-50">
-            <div className="container mx-auto px-6 max-w-5xl">
-                <h2 className="text-4xl font-bold text-center mb-16">
-          <span className="bg-gradient-to-r from-warm-primary to-warm-accent bg-clip-text text-transparent">
-            安全服务流程
-          </span>
-                </h2>
+        <section className="relative py-20 bg-gradient-to-b from-blue-50 to-purple-50 overflow-hidden">
+            {/* 装饰背景元素 */}
+            <div className="absolute top-0 left-0 w-full h-full opacity-10">
+                <div className="absolute top-1/4 left-1/4 w-64 h-64 rounded-full bg-blue-200 animate-pulse"></div>
+                <div className="absolute bottom-1/3 right-1/4 w-80 h-80 rounded-full bg-purple-200 animate-pulse"></div>
+            </div>
 
+            <div className="container mx-auto px-6 max-w-5xl relative z-10">
+                {/* 标题部分 */}
+                <div className="text-center mb-16">
+          <span className="inline-block px-4 py-2 bg-blue-100 text-blue-600 rounded-full text-sm font-medium mb-4">
+            服务流程
+          </span>
+                    <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+                        居家安全<span className="text-blue-600">服务流程</span>
+                    </h2>
+                    <div className="w-24 h-1.5 bg-blue-500 mx-auto mb-6"></div>
+                    <p className="text-gray-600 max-w-3xl mx-auto text-lg">
+                        从评估到响应，我们为您提供全方位的安全服务保障
+                    </p>
+                </div>
+
+                {/* 流程内容 */}
                 <div className="relative">
+                    {/* 背景装饰 */}
                     <div className="absolute inset-0 bg-gradient-to-r from-blue-100 to-purple-100 rounded-3xl opacity-30"></div>
 
+                    {/* 主内容区域 */}
                     <div className="relative bg-white rounded-3xl shadow-xl overflow-hidden">
                         <div className="p-8 md:p-12">
+                            {/* 品牌标识 */}
                             <div className="flex justify-center mb-12">
-                                <div className="bg-gradient-to-r from-warm-primary to-warm-accent p-4 rounded-full shadow-lg">
+                                <div className="bg-gradient-to-r from-blue-600 to-purple-600 p-4 rounded-full shadow-lg transition-transform duration-300 hover:scale-110">
                                     <img
                                         src="/logo.svg"
                                         alt="暖芯颐养"
                                         className="w-20 h-20 object-contain"
+                                        loading="lazy"
                                     />
                                 </div>
                             </div>
 
+                            {/* 流程步骤 */}
                             <div className="space-y-8">
                                 {steps.map((step) => (
                                     <FlowStep
@@ -143,14 +177,17 @@ const SafetyFlow: React.FC = () => {
                                         description={step.description}
                                         image={step.image}
                                         icon={step.icon}
+                                        isActive={activeStep === step.stepNumber}
+                                        onHover={() => setActiveStep(step.stepNumber)}
                                     />
                                 ))}
                             </div>
 
+                            {/* 行动按钮 */}
                             <div className="text-center mt-12">
-                                <button className="relative overflow-hidden group bg-gradient-to-r from-warm-primary to-warm-accent text-white px-8 py-4 rounded-xl hover:shadow-lg transition-all">
+                                <button className="relative overflow-hidden group bg-gradient-to-r from-blue-600 to-purple-600 text-white px-8 py-4 rounded-xl hover:shadow-lg transition-all duration-300 hover:scale-105">
                                     <span className="relative z-10">申请居家安全评估</span>
-                                    <span className="absolute inset-0 bg-gradient-to-r from-warm-accent to-warm-primary opacity-0 group-hover:opacity-100 transition-opacity"></span>
+                                    <span className="absolute inset-0 bg-gradient-to-r from-purple-600 to-blue-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
                                 </button>
                             </div>
                         </div>
