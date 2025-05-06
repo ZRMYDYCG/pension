@@ -17,6 +17,9 @@ export default function Header() {
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
 
+    // 判断当前是否为contact页面
+    const isContactPage = pathname === '/contact';
+
     const navItems = [
         { href: "/", label: "首页", icon: HomeIcon },
         { href: "/services", label: "服务介绍", icon: ServiceIcon },
@@ -26,19 +29,28 @@ export default function Header() {
     ];
 
     return (
-        <header className={`fixed w-full z-50 transition-all duration-300 ${isScrolled ? 'bg-white shadow-lg py-2' : 'bg-transparent py-4'}`}>
+        <header className={`fixed w-full z-50 transition-all duration-300 ${
+            isScrolled ? 'bg-white shadow-lg py-2' :
+                isContactPage ? 'bg-white py-4' : 'bg-transparent py-4'
+        }`}>
             <div className="container mx-auto px-6">
                 <div className="flex justify-between items-center">
                     {/* Logo */}
                     <Link href="/" className="flex items-center group">
-                        <div className={`p-2 rounded-full transition-all duration-300 ${isScrolled ? 'bg-blue-600' : 'bg-white'}`}>
+                        <div className={`p-2 rounded-full transition-all duration-300 ${
+                            isScrolled ? 'bg-blue-600' :
+                                isContactPage ? 'bg-gray-100' : 'bg-white'
+                        }`}>
                             <img
                                 src="/logo.svg"
                                 alt="暖芯颐养"
                                 className="h-8 transition-transform duration-300 group-hover:scale-110"
                             />
                         </div>
-                        <h1 className={`ml-3 text-xl font-bold transition-colors duration-300 ${isScrolled ? 'text-gray-900' : 'text-white'}`}>
+                        <h1 className={`ml-3 text-xl font-bold transition-colors duration-300 ${
+                            isScrolled ? 'text-gray-900' :
+                                isContactPage ? 'text-gray-700' : 'text-white'
+                        }`}>
                             暖芯颐养
                         </h1>
                     </Link>
@@ -49,9 +61,17 @@ export default function Header() {
                             <Link
                                 key={item.href}
                                 href={item.href}
-                                className={`flex items-center gap-2 px-3 py-2 rounded-lg transition-all duration-300 ${pathname === item.href ? 'bg-blue-100 text-blue-600' : isScrolled ? 'text-gray-700 hover:text-blue-600' : 'text-white hover:text-blue-200'}`}
+                                className={`flex items-center gap-2 px-3 py-2 rounded-lg transition-all duration-300 ${
+                                    pathname === item.href ? 'bg-blue-100 text-blue-600' :
+                                        isScrolled ? 'text-gray-700 hover:text-blue-600' :
+                                            isContactPage ? 'text-gray-500 hover:text-blue-600' : 'text-white hover:text-blue-200'
+                                }`}
                             >
-                                <item.icon className={`flex-shrink-0 ${pathname === item.href ? 'text-blue-600' : isScrolled ? 'text-gray-600' : 'text-white'}`} />
+                                <item.icon className={`flex-shrink-0 ${
+                                    pathname === item.href ? 'text-blue-600' :
+                                        isScrolled ? 'text-gray-600' :
+                                            isContactPage ? 'text-gray-400' : 'text-white'
+                                }`} />
                                 <span>{item.label}</span>
                             </Link>
                         ))}
@@ -61,7 +81,10 @@ export default function Header() {
                     <div className="hidden md:flex items-center gap-4">
                         <Link
                             href="/contact"
-                            className={`px-4 py-2 rounded-lg transition-all duration-300 ${isScrolled ? 'bg-blue-600 text-white hover:bg-blue-700' : 'bg-white text-blue-600 hover:bg-gray-100'}`}
+                            className={`px-4 py-2 rounded-lg transition-all duration-300 ${
+                                isScrolled ? 'bg-blue-600 text-white hover:bg-blue-700' :
+                                    isContactPage ? 'bg-gray-200 text-gray-700 hover:bg-gray-300' : 'bg-white text-blue-600 hover:bg-gray-100'
+                            }`}
                         >
                             联系我们
                         </Link>
@@ -69,11 +92,17 @@ export default function Header() {
 
                     {/* 移动端菜单按钮 */}
                     <button
-                        className={`md:hidden p-2 rounded-full transition-colors ${isScrolled ? 'bg-gray-100' : 'bg-white bg-opacity-20'}`}
+                        className={`md:hidden p-2 rounded-full transition-colors ${
+                            isScrolled ? 'bg-gray-100' :
+                                isContactPage ? 'bg-gray-100' : 'bg-white bg-opacity-20'
+                        }`}
                         onClick={() => setIsMenuOpen(!isMenuOpen)}
                         aria-label="导航菜单"
                     >
-                        <svg className="w-6 h-6" fill="none" stroke={isScrolled ? 'currentColor' : 'currentColor'} viewBox="0 0 24 24">
+                        <svg className="w-6 h-6" fill="none" stroke={
+                            isScrolled ? 'currentColor' :
+                                isContactPage ? 'currentColor' : 'white'
+                        } viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
                         </svg>
                     </button>
@@ -87,10 +116,14 @@ export default function Header() {
                                 <Link
                                     key={item.href}
                                     href={item.href}
-                                    className={`flex items-center gap-3 px-6 py-3 ${pathname === item.href ? 'bg-blue-50 text-blue-600' : 'text-gray-700 hover:bg-gray-100'}`}
+                                    className={`flex items-center gap-3 px-6 py-3 ${
+                                        pathname === item.href ? 'bg-blue-50 text-blue-600' : 'text-gray-700 hover:bg-gray-100'
+                                    }`}
                                     onClick={() => setIsMenuOpen(false)}
                                 >
-                                    <item.icon className={`flex-shrink-0 ${pathname === item.href ? 'text-blue-600' : 'text-gray-500'}`} />
+                                    <item.icon className={`flex-shrink-0 ${
+                                        pathname === item.href ? 'text-blue-600' : 'text-gray-500'
+                                    }`} />
                                     <span>{item.label}</span>
                                 </Link>
                             ))}
